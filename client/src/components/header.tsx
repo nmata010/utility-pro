@@ -5,12 +5,26 @@ export function Header() {
   const handlePrint = () => {
     // Add a small delay to ensure the page is fully rendered
     setTimeout(() => {
+      // Create a custom print style for browser header/footer suppression
+      const printStyle = document.createElement('style');
+      printStyle.textContent = `
+        @media print {
+          @page { margin: 0.5in; }
+        }
+      `;
+      document.head.appendChild(printStyle);
+      
       window.print();
+      
+      // Clean up the style after printing
+      setTimeout(() => {
+        document.head.removeChild(printStyle);
+      }, 1000);
     }, 100);
   };
 
   return (
-    <header className="no-print bg-white shadow-sm border-b border-slate-200">
+    <header className="no-print bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-3">

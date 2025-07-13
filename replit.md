@@ -110,12 +110,14 @@ Preferred communication style: Simple, everyday language.
 - Replit-optimized development experience
 
 ### Key Features
-- Print-optimized invoice layouts
+- Print-optimized invoice layouts with single-page constraint
 - Real-time calculation updates
 - Mobile-responsive design
 - Professional invoice formatting
 - Dual utility type support (electrical and water)
 - Party information management
 - Error handling and validation
+- Sticky header with persistent print functionality
+- Clean print output without browser headers/footers
 
 The application is structured as a full-stack TypeScript application with clear separation between client and server code, shared types, and a modern development experience optimized for Replit deployment.

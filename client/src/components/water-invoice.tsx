@@ -15,19 +15,7 @@ export function WaterInvoice({ data, calculation }: WaterInvoiceProps) {
   };
 
   return (
-    <div className="invoice-container bg-white rounded-xl shadow-lg p-8 print-section relative">
-      {/* Print Button - Only visible on screen */}
-      <div className="no-print absolute top-4 right-4">
-        <Button
-          onClick={handlePrint}
-          size="sm"
-          variant="outline"
-          className="flex items-center space-x-2 text-slate-600 hover:text-slate-900"
-        >
-          <Printer className="h-4 w-4" />
-          <span>Print</span>
-        </Button>
-      </div>
+    <div className="invoice-container bg-white rounded-xl shadow-lg p-8 print-section">
       <header className="flex justify-between items-start mb-8 pb-6 border-b-2 border-slate-200">
         <div>
           <h2 className="text-3xl font-bold text-slate-900 mb-2">Water Utility Overage Invoice</h2>
