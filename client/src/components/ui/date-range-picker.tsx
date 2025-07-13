@@ -18,18 +18,26 @@ interface DateRangePickerProps {
 export function DateRangePicker({ value, onChange, placeholder = "Select billing period" }: DateRangePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const dateRange: DateRange | undefined = value.startDate && value.endDate 
-    ? { from: value.startDate, to: value.endDate }
+  const dateRange: DateRange | undefined = value.startDate 
+    ? { from: value.startDate, to: value.endDate || undefined }
     : undefined;
 
   const handleSelect = (range: DateRange | undefined) => {
+    if (!range) {
+      onChange({
+        startDate: null,
+        endDate: null,
+      });
+      return;
+    }
+
     onChange({
-      startDate: range?.from || null,
-      endDate: range?.to || null,
+      startDate: range.from || null,
+      endDate: range.to || null,
     });
     
-    // Close popover if both dates are selected
-    if (range?.from && range?.to) {
+    // Close popover only if both dates are selected
+    if (range.from && range.to) {
       setIsOpen(false);
     }
   };
@@ -39,7 +47,7 @@ export function DateRangePicker({ value, onChange, placeholder = "Select billing
       return `${format(value.startDate, "MMM dd, yyyy")} - ${format(value.endDate, "MMM dd, yyyy")}`;
     }
     if (value.startDate) {
-      return `${format(value.startDate, "MMM dd, yyyy")} - End date`;
+      return `${format(value.startDate, "MMM dd, yyyy")} - Select end date`;
     }
     return placeholder;
   };
@@ -66,6 +74,7 @@ export function DateRangePicker({ value, onChange, placeholder = "Select billing
           selected={dateRange}
           onSelect={handleSelect}
           numberOfMonths={2}
+          showOutsideDays={false}
         />
       </PopoverContent>
     </Popover>
