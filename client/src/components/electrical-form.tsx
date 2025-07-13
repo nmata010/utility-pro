@@ -52,6 +52,21 @@ export function ElectricalForm({ data, calculation, onUpdate }: ElectricalFormPr
               </Label>
             </div>
 
+            <div className="space-y-2">
+              <Label className="text-sm font-medium text-slate-700">
+                Billing Period
+              </Label>
+              <DateRangePicker
+                value={data.billingPeriod}
+                onChange={(value) => onUpdate('billingPeriod', value)}
+                placeholder="Select billing period dates"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <h3 className="text-lg font-medium text-slate-800 border-b border-slate-200 pb-2">Allocation</h3>
+            
             <div className="relative">
               <Input
                 type="number"
@@ -63,21 +78,6 @@ export function ElectricalForm({ data, calculation, onUpdate }: ElectricalFormPr
               <Label className="form-floating-label absolute left-4 top-4 text-slate-500 pointer-events-none">
                 ADU Usage (kWh)
               </Label>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <h3 className="text-lg font-medium text-slate-800 border-b border-slate-200 pb-2">Billing Information</h3>
-            
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-slate-700">
-                Billing Period
-              </Label>
-              <DateRangePicker
-                value={data.billingPeriod}
-                onChange={(value) => onUpdate('billingPeriod', value)}
-                placeholder="Select billing period dates"
-              />
             </div>
 
             {calculation.isValid && (
