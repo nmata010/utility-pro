@@ -24,7 +24,7 @@ export function ElectricalForm({ data, calculation, onUpdate }: ElectricalFormPr
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-6">
-            <h3 className="text-lg font-medium text-slate-800 border-b border-slate-200 pb-2">Main Bill Details</h3>
+            <h3 className="text-lg font-medium text-slate-800 border-b border-slate-200 pb-2">Bill Details</h3>
             
             <div className="relative">
               <Input
@@ -105,7 +105,6 @@ export function ElectricalForm({ data, calculation, onUpdate }: ElectricalFormPr
           </div>
         </div>
       </div>
-
       <PartyInformation 
         data={data} 
         onUpdate={onUpdate}
