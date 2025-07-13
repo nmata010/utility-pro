@@ -6,11 +6,16 @@ export interface PartyInformation {
   propertyAddress: string;
 }
 
+export interface BillingPeriod {
+  startDate: Date | null;
+  endDate: Date | null;
+}
+
 export interface ElectricalData extends PartyInformation {
   mainBillAmount: number;
   totalKwh: number;
   aduKwh: number;
-  billingPeriod: string;
+  billingPeriod: BillingPeriod;
 }
 
 export interface WaterData extends PartyInformation {
@@ -18,7 +23,7 @@ export interface WaterData extends PartyInformation {
   monthlyAllowance: number;
   totalSqFt: number;
   tenantSqFt: number;
-  billingPeriod: string;
+  billingPeriod: BillingPeriod;
 }
 
 export interface ElectricalCalculation {

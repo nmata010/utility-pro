@@ -1,6 +1,7 @@
 import { ElectricalData, ElectricalCalculation } from '@/types/invoice';
 import { Zap, Printer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
 
 interface ElectricalInvoiceProps {
   data: ElectricalData;
@@ -14,13 +15,20 @@ export function ElectricalInvoice({ data, calculation }: ElectricalInvoiceProps)
     }, 100);
   };
 
+  const formatBillingPeriod = () => {
+    if (data.billingPeriod.startDate && data.billingPeriod.endDate) {
+      return `${format(data.billingPeriod.startDate, "MMM dd, yyyy")} - ${format(data.billingPeriod.endDate, "MMM dd, yyyy")}`;
+    }
+    return '[Enter Billing Period]';
+  };
+
   return (
     <div className="invoice-container bg-white rounded-xl shadow-lg p-8 print-section">
       <header className="flex justify-between items-start mb-8 pb-6 border-b-2 border-slate-200">
         <div>
           <h2 className="text-3xl font-bold text-slate-900 mb-2">Electrical Utility Invoice</h2>
           <p className="text-slate-600">
-            For period: {data.billingPeriod || '[Enter Billing Period]'}
+            For period: {formatBillingPeriod()}
           </p>
         </div>
         <div className="text-right">

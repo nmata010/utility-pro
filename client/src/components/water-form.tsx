@@ -1,13 +1,14 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calculator, Droplets } from 'lucide-react';
-import { WaterData, WaterCalculation } from '@/types/invoice';
+import { WaterData, WaterCalculation, BillingPeriod } from '@/types/invoice';
 import { PartyInformation } from './party-information';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 
 interface WaterFormProps {
   data: WaterData;
   calculation: WaterCalculation;
-  onUpdate: (field: keyof WaterData, value: string | number) => void;
+  onUpdate: (field: keyof WaterData, value: string | number | BillingPeriod) => void;
 }
 
 export function WaterForm({ data, calculation, onUpdate }: WaterFormProps) {
@@ -51,17 +52,15 @@ export function WaterForm({ data, calculation, onUpdate }: WaterFormProps) {
               </Label>
             </div>
 
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder=" "
-                value={data.billingPeriod}
-                onChange={(e) => onUpdate('billingPeriod', e.target.value)}
-                className="form-input peer w-full px-4 pt-6 pb-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-              />
-              <Label className="form-floating-label absolute left-4 top-4 text-slate-500 pointer-events-none">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium text-slate-700">
                 Billing Period
               </Label>
+              <DateRangePicker
+                value={data.billingPeriod}
+                onChange={(value) => onUpdate('billingPeriod', value)}
+                placeholder="Select billing period dates"
+              />
             </div>
           </div>
 

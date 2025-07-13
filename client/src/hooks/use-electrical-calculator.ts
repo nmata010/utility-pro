@@ -1,12 +1,12 @@
 import { useState, useCallback } from 'react';
-import { ElectricalData, ElectricalCalculation } from '@/types/invoice';
+import { ElectricalData, ElectricalCalculation, BillingPeriod } from '@/types/invoice';
 
 export function useElectricalCalculator() {
   const [data, setData] = useState<ElectricalData>({
     mainBillAmount: 0,
     totalKwh: 0,
     aduKwh: 0,
-    billingPeriod: '',
+    billingPeriod: { startDate: null, endDate: null },
     landlordName: '',
     landlordAddress: '',
     landlordPhone: '',
@@ -41,7 +41,7 @@ export function useElectricalCalculator() {
     };
   }, [data]);
 
-  const updateField = useCallback((field: keyof ElectricalData, value: string | number) => {
+  const updateField = useCallback((field: keyof ElectricalData, value: string | number | BillingPeriod) => {
     setData(prev => ({
       ...prev,
       [field]: value,

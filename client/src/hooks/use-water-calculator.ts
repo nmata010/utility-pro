@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { WaterData, WaterCalculation } from '@/types/invoice';
+import { WaterData, WaterCalculation, BillingPeriod } from '@/types/invoice';
 
 export function useWaterCalculator() {
   const [data, setData] = useState<WaterData>({
@@ -7,7 +7,7 @@ export function useWaterCalculator() {
     monthlyAllowance: 0,
     totalSqFt: 0,
     tenantSqFt: 0,
-    billingPeriod: '',
+    billingPeriod: { startDate: null, endDate: null },
     landlordName: '',
     landlordAddress: '',
     landlordPhone: '',
@@ -42,7 +42,7 @@ export function useWaterCalculator() {
     };
   }, [data]);
 
-  const updateField = useCallback((field: keyof WaterData, value: string | number) => {
+  const updateField = useCallback((field: keyof WaterData, value: string | number | BillingPeriod) => {
     setData(prev => ({
       ...prev,
       [field]: value,
