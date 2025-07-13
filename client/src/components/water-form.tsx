@@ -65,7 +65,7 @@ export function WaterForm({ data, calculation, onUpdate }: WaterFormProps) {
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-lg font-medium text-slate-800 border-b border-slate-200 pb-2">Property Allocation</h3>
+            <h3 className="text-lg font-medium text-slate-800 border-b border-slate-200 pb-2">Allocation</h3>
             
             <div className="relative">
               <Input
@@ -118,7 +118,6 @@ export function WaterForm({ data, calculation, onUpdate }: WaterFormProps) {
           </div>
         </div>
       </div>
-
       <PartyInformation 
         data={data} 
         onUpdate={onUpdate}
