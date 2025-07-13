@@ -118,6 +118,14 @@ export default function SettingsPage() {
               </div>
             </div>
 
+            {/* Privacy Banner */}
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 mb-6">
+              <h4 className="font-medium text-blue-800 mb-1">Privacy Note</h4>
+              <p className="text-sm text-blue-700">
+                Information is stored locally in your browser only. No data is sent to external servers.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="relative">
@@ -160,38 +168,11 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col justify-center space-y-4">
+              <div className="flex flex-col justify-center">
                 <div className="bg-slate-50 rounded-lg p-4">
                   <h3 className="font-medium text-slate-800 mb-2">Auto-Save Enabled</h3>
-                  <p className="text-sm text-slate-600 mb-3">
+                  <p className="text-sm text-slate-600">
                     Changes are automatically saved to your browser and will pre-fill future invoices.
-                  </p>
-                  <div className="flex space-x-2">
-                    <Button
-                      onClick={handleSaveNotification}
-                      variant="outline"
-                      size="sm"
-                      className="flex-1"
-                    >
-                      <Save className="mr-2 h-4 w-4" />
-                      Test Save
-                    </Button>
-                    <Button
-                      onClick={handleClearSettings}
-                      variant="outline"
-                      size="sm"
-                      className="flex-1 text-red-600 border-red-200 hover:bg-red-50"
-                    >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Clear All
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                  <h4 className="font-medium text-blue-800 mb-1">Privacy Note</h4>
-                  <p className="text-sm text-blue-700">
-                    Information is stored locally in your browser only. No data is sent to external servers.
                   </p>
                 </div>
               </div>
