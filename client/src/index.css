@@ -99,7 +99,7 @@
 
 @media print {
   @page {
-    margin: 0.75in 0.5in;
+    margin: 0.75in;
     size: letter;
   }
   
@@ -171,73 +171,74 @@
   
   th, td {
     border: 1px solid #e2e8f0 !important;
-    padding: 12px !important;
-    font-size: 14px !important;
+    padding: 8px 10px !important;
+    font-size: 13px !important;
   }
   
-  /* Full page utilization with proper spacing */
+  /* Balanced single-page layout */
   .invoice-container {
-    font-size: 14px !important;
+    font-size: 13px !important;
     line-height: 1.4 !important;
     min-height: calc(11in - 1.5in) !important;
+    max-height: calc(11in - 1.5in) !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    overflow: hidden !important;
   }
   
   .invoice-container h2 {
-    font-size: 28px !important;
-    margin-bottom: 16px !important;
-  }
-  
-  .invoice-container h3 {
-    font-size: 18px !important;
+    font-size: 24px !important;
     margin-bottom: 12px !important;
   }
   
-  .invoice-container h4 {
+  .invoice-container h3 {
     font-size: 16px !important;
     margin-bottom: 8px !important;
   }
   
+  .invoice-container h4 {
+    font-size: 14px !important;
+    margin-bottom: 6px !important;
+  }
+  
   .invoice-container header {
-    margin-bottom: 32px !important;
-    padding-bottom: 20px !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 14px !important;
   }
   
   .invoice-container .space-y-3 > * + * {
-    margin-top: 16px !important;
+    margin-top: 10px !important;
   }
   
   .invoice-container .mb-8 {
-    margin-bottom: 32px !important;
+    margin-bottom: 20px !important;
   }
   
   .invoice-container .mb-6 {
-    margin-bottom: 24px !important;
+    margin-bottom: 16px !important;
   }
   
   .invoice-container .p-4 {
-    padding: 16px !important;
+    padding: 10px !important;
   }
   
   .invoice-container .p-6 {
-    padding: 20px !important;
+    padding: 14px !important;
   }
   
   /* Improve table readability */
   .invoice-container table th {
     background: #f8fafc !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
+    font-size: 13px !important;
   }
   
-  /* Expanded footer to fill page */
+  /* Footer with balanced spacing */
   .invoice-container footer {
     margin-top: auto !important;
-    padding-top: 24px !important;
-    font-size: 13px !important;
-    line-height: 1.5 !important;
+    padding-top: 16px !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
   }
   
   /* Remove any extra spacing that could cause page breaks */
@@ -279,8 +280,8 @@
   /* Ensure calculations box uses proper space */
   .invoice-container .bg-blue-50,
   .invoice-container .bg-emerald-50 {
-    padding: 16px 20px !important;
-    margin: 20px 0 !important;
+    padding: 10px 14px !important;
+    margin: 12px 0 !important;
   }
   
   /* Create main content area that fills remaining space */
@@ -288,20 +289,20 @@
     flex-grow: 1 !important;
   }
   
-  /* Add strategic spacing for full page utilization */
+  /* Add balanced spacing for single page */
   .invoice-container table {
-    margin-bottom: 40px !important;
+    margin-bottom: 20px !important;
   }
   
-  /* Ensure the total due section has generous spacing */
+  /* Ensure the total due section has balanced spacing */
   .invoice-container .flex.justify-end {
-    margin-bottom: 32px !important;
-    margin-top: 24px !important;
+    margin-bottom: 16px !important;
+    margin-top: 16px !important;
   }
   
   /* Bill To section spacing */
   .invoice-container .bg-slate-50 {
-    padding: 16px 20px !important;
-    margin-bottom: 24px !important;
+    padding: 10px 14px !important;
+    margin-bottom: 16px !important;
   }
 }
