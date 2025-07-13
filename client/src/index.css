@@ -101,15 +101,95 @@
   .no-print { 
     display: none !important; 
   }
+  
   .print-section { 
     break-inside: avoid; 
   }
+  
   body { 
     -webkit-print-color-adjust: exact; 
-    print-color-adjust: exact; 
+    print-color-adjust: exact;
+    margin: 0;
+    padding: 0;
+    background: white !important;
   }
+  
   .invoice-container { 
     box-shadow: none !important; 
-    margin: 0 !important; 
+    margin: 0 !important;
+    padding: 20px !important;
+    border-radius: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+  
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+  
+  .print-layout {
+    display: block !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
+  }
+  
+  /* Ensure colors print properly */
+  .bg-gradient-to-r,
+  .bg-gradient-to-br,
+  .bg-blue-50,
+  .bg-emerald-50,
+  .bg-slate-50 {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  /* Table styling for print */
+  table {
+    width: 100% !important;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #e2e8f0 !important;
+    padding: 8px !important;
+  }
+  
+  /* Page breaks */
+  .invoice-container {
+    page-break-inside: avoid;
+  }
+  
+  h2, h3, h4 {
+    page-break-after: avoid;
+  }
+  
+  /* Ensure proper font sizes for print */
+  .invoice-container {
+    font-size: 14px !important;
+  }
+  
+  .invoice-container h2 {
+    font-size: 24px !important;
+  }
+  
+  .invoice-container h3 {
+    font-size: 18px !important;
+  }
+  
+  .invoice-container h4 {
+    font-size: 16px !important;
+  }
+  
+  /* Improve table readability */
+  .invoice-container table th {
+    background: #f8fafc !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Ensure footer stays at bottom */
+  .invoice-container footer {
+    margin-top: 40px !important;
   }
 }

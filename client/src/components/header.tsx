@@ -3,7 +3,10 @@ import { Zap, Printer } from 'lucide-react';
 
 export function Header() {
   const handlePrint = () => {
-    window.print();
+    // Add a small delay to ensure the page is fully rendered
+    setTimeout(() => {
+      window.print();
+    }, 100);
   };
 
   return (

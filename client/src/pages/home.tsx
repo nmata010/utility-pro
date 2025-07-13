@@ -24,7 +24,7 @@ export default function Home() {
           onTabChange={setActiveTab} 
         />
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 print-layout">
           <div className="no-print space-y-6">
             {activeTab === 'electric' ? (
               <ElectricalForm 
