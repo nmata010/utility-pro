@@ -126,15 +126,14 @@
   .invoice-container { 
     box-shadow: none !important; 
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 1in !important;
     border-radius: 0 !important;
     max-width: none !important;
     width: 100% !important;
     height: auto !important;
-    transform: scale(0.85) !important;
-    transform-origin: top left !important;
+    transform: none !important;
     page-break-inside: avoid !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
   
   main {
@@ -172,68 +171,68 @@
   
   th, td {
     border: 1px solid #e2e8f0 !important;
-    padding: 6px !important;
-    font-size: 12px !important;
+    padding: 10px !important;
+    font-size: 14px !important;
   }
   
-  /* Compact sizing for single page */
+  /* Professional sizing for full page */
   .invoice-container {
-    font-size: 11px !important;
-    line-height: 1.3 !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
   }
   
   .invoice-container h2 {
-    font-size: 20px !important;
-    margin-bottom: 8px !important;
-  }
-  
-  .invoice-container h3 {
-    font-size: 14px !important;
-    margin-bottom: 6px !important;
-  }
-  
-  .invoice-container h4 {
-    font-size: 12px !important;
-    margin-bottom: 4px !important;
-  }
-  
-  .invoice-container header {
-    margin-bottom: 16px !important;
-    padding-bottom: 12px !important;
-  }
-  
-  .invoice-container .space-y-3 > * + * {
-    margin-top: 8px !important;
-  }
-  
-  .invoice-container .mb-8 {
-    margin-bottom: 16px !important;
-  }
-  
-  .invoice-container .mb-6 {
+    font-size: 28px !important;
     margin-bottom: 12px !important;
   }
   
+  .invoice-container h3 {
+    font-size: 18px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .invoice-container h4 {
+    font-size: 16px !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .invoice-container header {
+    margin-bottom: 24px !important;
+    padding-bottom: 16px !important;
+  }
+  
+  .invoice-container .space-y-3 > * + * {
+    margin-top: 12px !important;
+  }
+  
+  .invoice-container .mb-8 {
+    margin-bottom: 24px !important;
+  }
+  
+  .invoice-container .mb-6 {
+    margin-bottom: 18px !important;
+  }
+  
   .invoice-container .p-4 {
-    padding: 8px !important;
+    padding: 12px !important;
   }
   
   .invoice-container .p-6 {
-    padding: 12px !important;
+    padding: 16px !important;
   }
   
   /* Improve table readability */
   .invoice-container table th {
     background: #f8fafc !important;
     font-weight: 600 !important;
-    font-size: 10px !important;
+    font-size: 14px !important;
   }
   
-  /* Compact footer */
+  /* Professional footer */
   .invoice-container footer {
-    margin-top: 16px !important;
-    padding-top: 12px !important;
-    font-size: 10px !important;
+    margin-top: 32px !important;
+    padding-top: 20px !important;
+    font-size: 12px !important;
   }
   
   /* Remove any extra spacing that could cause page breaks */
