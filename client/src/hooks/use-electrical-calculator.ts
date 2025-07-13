@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { ElectricalData, ElectricalCalculation, BillingPeriod } from '@/types/invoice';
 
 export function useElectricalCalculator() {
@@ -13,6 +13,24 @@ export function useElectricalCalculator() {
     tenantName: '',
     propertyAddress: '',
   });
+
+  // Load landlord settings from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('utilitypro-landlord-settings');
+      if (stored) {
+        const landlordSettings = JSON.parse(stored);
+        setData(prev => ({
+          ...prev,
+          landlordName: landlordSettings.landlordName || '',
+          landlordAddress: landlordSettings.landlordAddress || '',
+          landlordPhone: landlordSettings.landlordPhone || '',
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to load landlord settings:', error);
+    }
+  }, []);
 
   const calculate = useCallback((): ElectricalCalculation => {
     const { mainBillAmount, totalKwh, aduKwh } = data;
