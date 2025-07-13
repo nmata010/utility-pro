@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Zap, Printer } from 'lucide-react';
+import { Zap, Printer, Settings } from 'lucide-react';
 
 export function Header() {
   const handlePrint = () => {
@@ -38,13 +38,25 @@ export function Header() {
           </div>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-slate-600">Made for Landlords & Property Managers</span>
-            <Button 
-              onClick={handlePrint}
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors duration-200"
-            >
-              <Printer className="mr-2 h-4 w-4" />
-              Print Invoice
-            </Button>
+            <div className="flex items-center space-x-2">
+              <Button 
+                onClick={handlePrint}
+                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors duration-200"
+              >
+                <Printer className="mr-2 h-4 w-4" />
+                Print Invoice
+              </Button>
+              <Button 
+                variant="outline"
+                size="icon"
+                className="w-10 h-10 border-slate-300 hover:bg-slate-50 transition-colors duration-200"
+                onClick={() => {
+                  // Settings menu - placeholder for now
+                }}
+              >
+                <Settings className="h-4 w-4 text-slate-600" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
