@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Zap, Printer, Settings } from 'lucide-react';
+import { useLocation } from 'wouter';
 
 export function Header() {
+  const [, setLocation] = useLocation();
+
   const handlePrint = () => {
     // Add a small delay to ensure the page is fully rendered
     setTimeout(() => {
@@ -50,9 +53,7 @@ export function Header() {
                 variant="outline"
                 size="icon"
                 className="w-10 h-10 border-slate-300 hover:bg-slate-50 transition-colors duration-200"
-                onClick={() => {
-                  // Settings menu - placeholder for now
-                }}
+                onClick={() => setLocation('/settings')}
               >
                 <Settings className="h-4 w-4 text-slate-600" />
               </Button>
