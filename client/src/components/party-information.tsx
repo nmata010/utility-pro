@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Users } from 'lucide-react';
+import { TenantSelector } from '@/components/ui/tenant-selector';
 
 interface PartyInformationProps {
   data: {
@@ -14,6 +16,14 @@ interface PartyInformationProps {
 }
 
 export function PartyInformation({ data, onUpdate }: PartyInformationProps) {
+  const [selectedTenantId, setSelectedTenantId] = useState<string>('');
+
+  const handleTenantSelect = (tenantId: string, tenantName: string, propertyAddress: string) => {
+    setSelectedTenantId(tenantId);
+    onUpdate('tenantName', tenantName);
+    onUpdate('propertyAddress', propertyAddress);
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-sm p-6">
       <h3 className="text-lg font-medium text-slate-800 mb-6 flex items-center space-x-2">
@@ -66,12 +76,20 @@ export function PartyInformation({ data, onUpdate }: PartyInformationProps) {
         <div className="space-y-4">
           <h4 className="font-medium text-slate-700">Tenant Details</h4>
           <div className="space-y-4">
+            <TenantSelector 
+              value={selectedTenantId}
+              onSelect={handleTenantSelect}
+            />
+            
             <div className="relative">
               <Input
                 type="text"
                 placeholder=" "
                 value={data.tenantName}
-                onChange={(e) => onUpdate('tenantName', e.target.value)}
+                onChange={(e) => {
+                  onUpdate('tenantName', e.target.value);
+                  if (selectedTenantId) setSelectedTenantId(''); // Clear selection if manually edited
+                }}
                 className="form-input peer w-full px-4 pt-6 pb-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
               />
               <Label className="form-floating-label absolute left-4 top-4 text-slate-500 pointer-events-none">
@@ -83,7 +101,10 @@ export function PartyInformation({ data, onUpdate }: PartyInformationProps) {
                 type="text"
                 placeholder=" "
                 value={data.propertyAddress}
-                onChange={(e) => onUpdate('propertyAddress', e.target.value)}
+                onChange={(e) => {
+                  onUpdate('propertyAddress', e.target.value);
+                  if (selectedTenantId) setSelectedTenantId(''); // Clear selection if manually edited
+                }}
                 className="form-input peer w-full px-4 pt-6 pb-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
               />
               <Label className="form-floating-label absolute left-4 top-4 text-slate-500 pointer-events-none">
