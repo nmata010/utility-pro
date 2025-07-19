@@ -7,9 +7,10 @@ import { useSaveInvoice } from '@/hooks/use-save-invoice';
 interface WaterInvoiceProps {
   data: WaterData;
   calculation: WaterCalculation;
+  viewOnly?: boolean;
 }
 
-export function WaterInvoice({ data, calculation }: WaterInvoiceProps) {
+export function WaterInvoice({ data, calculation, viewOnly = false }: WaterInvoiceProps) {
   const { saveInvoice, isSaving } = useSaveInvoice();
 
   const handlePrint = () => {
@@ -166,17 +167,19 @@ export function WaterInvoice({ data, calculation }: WaterInvoiceProps) {
           </p>
         </div>
         
-        <div className="flex justify-end gap-2 pt-4 no-print">
-          <Button
-            onClick={handleSave}
-            disabled={!calculation.isValid || calculation.aduOverageCharge <= 0 || isSaving}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <Save className="h-4 w-4" />
-            {isSaving ? 'Saving...' : 'Save Invoice'}
-          </Button>
-        </div>
+        {!viewOnly && (
+          <div className="flex justify-end gap-2 pt-4 no-print">
+            <Button
+              onClick={handleSave}
+              disabled={!calculation.isValid || calculation.aduOverageCharge <= 0 || isSaving}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Save className="h-4 w-4" />
+              {isSaving ? 'Saving...' : 'Save Invoice'}
+            </Button>
+          </div>
+        )}
       </footer>
     </div>
   );

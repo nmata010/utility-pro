@@ -8,9 +8,10 @@ import { useEffect } from 'react';
 interface ElectricalInvoiceProps {
   data: ElectricalData;
   calculation: ElectricalCalculation;
+  viewOnly?: boolean;
 }
 
-export function ElectricalInvoice({ data, calculation }: ElectricalInvoiceProps) {
+export function ElectricalInvoice({ data, calculation, viewOnly = false }: ElectricalInvoiceProps) {
   const { saveInvoice, isSaving } = useSaveInvoice();
 
   const handlePrint = () => {
@@ -164,17 +165,19 @@ export function ElectricalInvoice({ data, calculation }: ElectricalInvoiceProps)
           </p>
         </div>
         
-        <div className="flex justify-end gap-2 pt-4 no-print">
-          <Button
-            onClick={handleSave}
-            disabled={!calculation.isValid || isSaving}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <Save className="h-4 w-4" />
-            {isSaving ? 'Saving...' : 'Save Invoice'}
-          </Button>
-        </div>
+        {!viewOnly && (
+          <div className="flex justify-end gap-2 pt-4 no-print">
+            <Button
+              onClick={handleSave}
+              disabled={!calculation.isValid || isSaving}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Save className="h-4 w-4" />
+              {isSaving ? 'Saving...' : 'Save Invoice'}
+            </Button>
+          </div>
+        )}
       </footer>
     </div>
   );

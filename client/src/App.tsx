@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import SettingsPage from "@/pages/settings";
 import Landing from "@/pages/landing";
 import InvoiceHistory from "@/pages/invoice-history";
+import InvoiceView from "@/pages/invoice-view";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +23,7 @@ function Router() {
           <Route path="/" component={Home} />
           <Route path="/settings" component={SettingsPage} />
           <Route path="/history" component={InvoiceHistory} />
+          <Route path="/invoice/:id" component={InvoiceView} />
         </>
       )}
       <Route component={NotFound} />
