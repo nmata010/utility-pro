@@ -53,34 +53,38 @@ export default function InvoiceView() {
   }
 
   // Reconstruct the invoice data from stored JSON
-  const invoiceData = invoice.invoiceType === 'electrical' ? {
-    landlordName: invoice.landlordData.name,
-    landlordAddress: invoice.landlordData.address,
-    landlordPhone: invoice.landlordData.phone,
-    tenantName: invoice.tenantData.name,
-    propertyAddress: invoice.tenantData.address,
-    billingPeriod: {
-      startDate: null,
-      endDate: null,
-    },
-    totalKwh: 0,
-    mainBillAmount: 0,
-    aduKwh: 0,
-  } : {
-    landlordName: invoice.landlordData.name,
-    landlordAddress: invoice.landlordData.address,
-    landlordPhone: invoice.landlordData.phone,
-    tenantName: invoice.tenantData.name,
-    propertyAddress: invoice.tenantData.address,
-    billingPeriod: {
-      startDate: null,
-      endDate: null,
-    },
-    totalSqFt: 0,
-    tenantSqFt: 0,
-    quarterlyAllowance: 0,
-    quarterlyBill: 0,
-  };
+  const invoiceData = invoice.formData ? 
+    // Use saved form data if available (new invoices)
+    invoice.formData :
+    // Fallback for old invoices without form data
+    (invoice.invoiceType === 'electrical' ? {
+      landlordName: invoice.landlordData.name,
+      landlordAddress: invoice.landlordData.address,
+      landlordPhone: invoice.landlordData.phone,
+      tenantName: invoice.tenantData.name,
+      propertyAddress: invoice.tenantData.address,
+      billingPeriod: {
+        startDate: null,
+        endDate: null,
+      },
+      totalKwh: 0,
+      mainBillAmount: 0,
+      aduKwh: 0,
+    } : {
+      landlordName: invoice.landlordData.name,
+      landlordAddress: invoice.landlordData.address,
+      landlordPhone: invoice.landlordData.phone,
+      tenantName: invoice.tenantData.name,
+      propertyAddress: invoice.tenantData.address,
+      billingPeriod: {
+        startDate: null,
+        endDate: null,
+      },
+      totalSqFt: 0,
+      tenantSqFt: 0,
+      monthlyAllowance: 0,
+      quarterlyBill: 0,
+    });
 
   return (
     <div className="min-h-screen bg-slate-50 print:bg-white">

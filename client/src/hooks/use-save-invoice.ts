@@ -17,6 +17,7 @@ interface SaveInvoiceData {
     name: string;
     address: string;
   };
+  formData: ElectricalData | WaterData;
   calculationData: ElectricalCalculation | WaterCalculation;
   totalAmount: string;
 }
@@ -34,6 +35,7 @@ export function useSaveInvoice() {
           invoiceDate: data.invoiceDate,
           landlordData: data.landlordData,
           tenantData: data.tenantData,
+          formData: data.formData,
           calculationData: data.calculationData,
           totalAmount: data.totalAmount,
         }),

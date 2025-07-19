@@ -75,6 +75,7 @@ export const invoices = pgTable("invoices", {
   invoiceDate: timestamp("invoice_date").notNull(),
   landlordData: jsonb("landlord_data").notNull(),
   tenantData: jsonb("tenant_data").notNull(),
+  formData: jsonb("form_data"), // Original form data (billing periods, usage, etc.) - nullable for backward compatibility
   calculationData: jsonb("calculation_data").notNull(),
   totalAmount: text("total_amount").notNull(),
   createdAt: timestamp("created_at").defaultNow(),

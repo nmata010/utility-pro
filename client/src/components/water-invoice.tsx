@@ -38,6 +38,7 @@ export function WaterInvoice({ data, calculation, viewOnly = false }: WaterInvoi
         name: data.tenantName,
         address: data.propertyAddress,
       },
+      formData: data,
       calculationData: calculation,
       totalAmount: calculation.tenantOwes.toFixed(2),
     });

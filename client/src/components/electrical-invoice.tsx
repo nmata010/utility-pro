@@ -39,8 +39,9 @@ export function ElectricalInvoice({ data, calculation, viewOnly = false }: Elect
         name: data.tenantName,
         address: data.propertyAddress,
       },
+      formData: data,
       calculationData: calculation,
-      totalAmount: calculation.mainHouseCost.toFixed(2),
+      totalAmount: calculation.aduCost.toFixed(2),
     });
   };
 
