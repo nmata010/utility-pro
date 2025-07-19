@@ -26,7 +26,7 @@ export function useSaveInvoice() {
 
   const mutation = useMutation({
     mutationFn: async (data: SaveInvoiceData) => {
-      await apiRequest('/api/invoices', {
+      const response = await apiRequest('/api/invoices', {
         method: 'POST',
         body: JSON.stringify({
           invoiceType: data.type,
@@ -38,6 +38,7 @@ export function useSaveInvoice() {
           totalAmount: data.totalAmount,
         }),
       });
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/invoices'] });
@@ -47,6 +48,7 @@ export function useSaveInvoice() {
       });
     },
     onError: (error) => {
+      console.error("Save invoice error:", error);
       if (isUnauthorizedError(error as Error)) {
         toast({
           title: "Unauthorized",
