@@ -38,7 +38,7 @@ export default function InvoiceView() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Button
             variant="outline"
-            onClick={() => setLocation('/invoice-history')}
+            onClick={() => setLocation('/history')}
             className="mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -90,7 +90,7 @@ export default function InvoiceView() {
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
-              onClick={() => setLocation('/invoice-history')}
+              onClick={() => setLocation('/history')}
               className="flex items-center gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
