@@ -131,8 +131,9 @@ Preferred communication style: Simple, everyday language.
 - Real-time calculation updates
 - Mobile-responsive design
 - Professional invoice formatting
-- Dual utility type support (electrical and water)
+- Dual utility type support (electrical and water) with unified save functionality
 - Party information management with database persistence
+- Landlord settings persist across sessions via database storage
 - Error handling and validation
 - Sticky header with persistent print functionality
 - Clean print output without browser headers/footers

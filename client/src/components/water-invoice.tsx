@@ -20,7 +20,7 @@ export function WaterInvoice({ data, calculation, viewOnly = false }: WaterInvoi
   };
 
   const handleSave = () => {
-    if (!calculation.isValid || calculation.aduOverageCharge <= 0) return;
+    if (!calculation.isValid || calculation.tenantOwes <= 0) return;
 
     const invoiceNumber = `INV-${Date.now()}`;
     const invoiceDate = new Date();
@@ -39,7 +39,7 @@ export function WaterInvoice({ data, calculation, viewOnly = false }: WaterInvoi
         address: data.propertyAddress,
       },
       calculationData: calculation,
-      totalAmount: calculation.aduOverageCharge.toFixed(2),
+      totalAmount: calculation.tenantOwes.toFixed(2),
     });
   };
 
@@ -171,7 +171,7 @@ export function WaterInvoice({ data, calculation, viewOnly = false }: WaterInvoi
           <div className="flex justify-end gap-2 pt-4 no-print">
             <Button
               onClick={handleSave}
-              disabled={!calculation.isValid || calculation.aduOverageCharge <= 0 || isSaving}
+              disabled={!calculation.isValid || calculation.tenantOwes <= 0 || isSaving}
               variant="outline"
               className="flex items-center gap-2"
             >
