@@ -2,7 +2,7 @@
 
 ## Overview
 
-UtilityPro is a modern web application designed for landlords and property managers to generate professional utility invoices for tenants. The application calculates electrical and water utility charges based on usage data and generates printable invoices. It features a clean, responsive interface built with React and shadcn/ui components.
+UtilityPro is a modern SaaS web application designed for landlords and property managers to generate professional utility invoices for tenants. The application now features user authentication, cloud-based data storage, and invoice history tracking. It calculates electrical and water utility charges based on usage data and generates printable invoices with automatic cloud saving. Built with React, shadcn/ui components, and PostgreSQL database backend.
 
 ## User Preferences
 
@@ -24,6 +24,8 @@ Preferred communication style: Simple, everyday language.
 - **Language**: TypeScript with ES modules
 - **Database ORM**: Drizzle ORM configured for PostgreSQL
 - **Database**: Neon Database (serverless PostgreSQL)
+- **Authentication**: Replit Auth with OpenID Connect
+- **Session Management**: PostgreSQL-backed session storage
 - **Development**: Hot module replacement via Vite middleware
 
 ### Build and Development
@@ -34,25 +36,36 @@ Preferred communication style: Simple, everyday language.
 ## Key Components
 
 ### Frontend Components
-1. **Invoice Calculators**: 
+1. **Authentication**: 
+   - Landing page with marketing content
+   - Protected routes with Replit Auth integration
+   - User profile management
+2. **Invoice Calculators**: 
    - Electrical utility calculator with submeter support
    - Water utility calculator with square footage-based allocation
-2. **Form Management**: 
+3. **Form Management**: 
    - Floating label inputs with real-time validation
    - Party information management (landlord/tenant details)
-3. **Invoice Generation**: 
+   - Database-backed settings persistence
+4. **Invoice Generation**: 
    - Professional invoice layouts with print optimization
    - Dynamic calculations and formatting
-4. **UI Components**: 
+   - Save to cloud functionality with invoice history
+5. **UI Components**: 
    - Comprehensive shadcn/ui component library
    - Tab navigation for utility type switching
    - Responsive design with mobile support
+   - Invoice history page with filtering
 
 ### Backend Components
 1. **Express Server**: RESTful API with middleware for logging and error handling
-2. **Storage Interface**: Abstracted storage layer with in-memory implementation
-3. **Database Schema**: User management with Drizzle ORM models
-4. **Route Management**: Modular route registration system
+2. **Storage Interface**: Database storage implementation with PostgreSQL
+3. **Database Schema**: 
+   - User management with Replit Auth integration
+   - Invoice storage with full calculation history
+   - Landlord and tenant settings persistence
+4. **Route Management**: Protected routes with authentication middleware
+5. **Session Storage**: PostgreSQL-backed session management
 
 ## Data Flow
 
@@ -110,14 +123,20 @@ Preferred communication style: Simple, everyday language.
 - Replit-optimized development experience
 
 ### Key Features
+- User authentication with Replit Auth (OpenID Connect)
+- Cloud-based invoice storage with PostgreSQL database
+- Invoice history tracking with search and filtering
+- Save invoices with one-click functionality
 - Print-optimized invoice layouts with single-page constraint
 - Real-time calculation updates
 - Mobile-responsive design
 - Professional invoice formatting
 - Dual utility type support (electrical and water)
-- Party information management
+- Party information management with database persistence
 - Error handling and validation
 - Sticky header with persistent print functionality
 - Clean print output without browser headers/footers
+- Marketing landing page for new users
+- Protected routes requiring authentication
 
 The application is structured as a full-stack TypeScript application with clear separation between client and server code, shared types, and a modern development experience optimized for Replit deployment.

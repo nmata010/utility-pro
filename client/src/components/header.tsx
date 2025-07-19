@@ -1,9 +1,13 @@
 import { Button } from '@/components/ui/button';
-import { Zap, Printer, Settings } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Zap, Printer, Settings, History, LogOut, User } from 'lucide-react';
 import { useLocation } from 'wouter';
+import { useAuth } from '@/hooks/useAuth';
 
 export function Header() {
   const [, setLocation] = useLocation();
+  const { user } = useAuth();
 
   const handlePrint = () => {
     // Add a small delay to ensure the page is fully rendered
@@ -26,6 +30,12 @@ export function Header() {
     }, 100);
   };
 
+  const userInitials = user?.firstName && user?.lastName 
+    ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
+    : user?.email 
+    ? user.email[0].toUpperCase()
+    : 'U';
+
   return (
     <header className="no-print bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,24 +50,59 @@ export function Header() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-slate-600">Made for Landlords & Property Managers</span>
-            <div className="flex items-center space-x-2">
-              <Button 
-                onClick={handlePrint}
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors duration-200"
-              >
-                <Printer className="mr-2 h-4 w-4" />
-                Print Invoice
-              </Button>
-              <Button 
-                variant="outline"
-                size="icon"
-                className="w-10 h-10 border-slate-300 hover:bg-slate-50 transition-colors duration-200"
-                onClick={() => setLocation('/settings')}
-              >
-                <Settings className="h-4 w-4 text-slate-600" />
-              </Button>
-            </div>
+            <Button 
+              onClick={handlePrint}
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors duration-200"
+            >
+              <Printer className="mr-2 h-4 w-4" />
+              Print Invoice
+            </Button>
+            
+            <Button 
+              variant="outline"
+              onClick={() => setLocation('/history')}
+              className="hidden sm:inline-flex items-center"
+            >
+              <History className="mr-2 h-4 w-4" />
+              Invoice History
+            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={user?.profileImageUrl || ''} alt={user?.email || ''} />
+                    <AvatarFallback>{userInitials}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <div className="flex items-center justify-start gap-2 p-2">
+                  <div className="flex flex-col space-y-1 leading-none">
+                    {user?.firstName && user?.lastName && (
+                      <p className="text-sm font-medium">{user.firstName} {user.lastName}</p>
+                    )}
+                    {user?.email && (
+                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                    )}
+                  </div>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setLocation('/settings')}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLocation('/history')} className="sm:hidden">
+                  <History className="mr-2 h-4 w-4" />
+                  Invoice History
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => window.location.href = '/api/logout'}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>

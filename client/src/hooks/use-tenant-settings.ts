@@ -1,4 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { apiRequest, queryClient } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
+import { isUnauthorizedError } from '@/lib/authUtils';
+import type { Tenant } from '@shared/schema';
 
 export interface TenantInfo {
   id: string;
@@ -6,67 +11,151 @@ export interface TenantInfo {
   propertyAddress: string;
 }
 
-const STORAGE_KEY = 'utilitypro-tenant-settings';
-
 export function useTenantSettings() {
-  const [tenants, setTenants] = useState<TenantInfo[]>([]);
+  const { toast } = useToast();
 
-  // Load tenants from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsedTenants = JSON.parse(stored);
-        setTenants(parsedTenants || []);
+  // Fetch tenants from database
+  const { data: dbTenants = [], isLoading } = useQuery<Tenant[]>({
+    queryKey: ['/api/tenants'],
+  });
+
+  // Convert database tenants to TenantInfo format
+  const tenants: TenantInfo[] = dbTenants.map(tenant => ({
+    id: tenant.id.toString(),
+    tenantName: tenant.tenantName,
+    propertyAddress: tenant.tenantAddress || '',
+  }));
+
+  // Add tenant mutation
+  const addMutation = useMutation({
+    mutationFn: async (tenant: Omit<TenantInfo, 'id'>) => {
+      await apiRequest('/api/tenants', {
+        method: 'POST',
+        body: JSON.stringify({
+          tenantName: tenant.tenantName,
+          tenantAddress: tenant.propertyAddress,
+          tenantPhone: '',
+        }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/tenants'] });
+      toast({
+        title: "Tenant added",
+        description: "The tenant has been added successfully.",
+      });
+    },
+    onError: (error) => {
+      if (isUnauthorizedError(error as Error)) {
+        toast({
+          title: "Unauthorized",
+          description: "You are logged out. Logging in again...",
+          variant: "destructive",
+        });
+        setTimeout(() => {
+          window.location.href = "/api/login";
+        }, 500);
+        return;
       }
-    } catch (error) {
-      console.error('Failed to load tenant settings:', error);
-    }
-  }, []);
+      toast({
+        title: "Error",
+        description: "Failed to add tenant. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
 
-  // Save tenants to localStorage
-  const saveTenants = useCallback((newTenants: TenantInfo[]) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newTenants));
-      setTenants(newTenants);
-    } catch (error) {
-      console.error('Failed to save tenant settings:', error);
-    }
-  }, []);
+  // Update tenant mutation
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, updates }: { id: string; updates: Partial<Omit<TenantInfo, 'id'>> }) => {
+      await apiRequest(`/api/tenants/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          tenantName: updates.tenantName,
+          tenantAddress: updates.propertyAddress,
+        }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/tenants'] });
+    },
+    onError: (error) => {
+      if (isUnauthorizedError(error as Error)) {
+        toast({
+          title: "Unauthorized",
+          description: "You are logged out. Logging in again...",
+          variant: "destructive",
+        });
+        setTimeout(() => {
+          window.location.href = "/api/login";
+        }, 500);
+        return;
+      }
+      toast({
+        title: "Error",
+        description: "Failed to update tenant. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Delete tenant mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await apiRequest(`/api/tenants/${id}`, {
+        method: 'DELETE',
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/tenants'] });
+      toast({
+        title: "Tenant deleted",
+        description: "The tenant has been removed successfully.",
+      });
+    },
+    onError: (error) => {
+      if (isUnauthorizedError(error as Error)) {
+        toast({
+          title: "Unauthorized",
+          description: "You are logged out. Logging in again...",
+          variant: "destructive",
+        });
+        setTimeout(() => {
+          window.location.href = "/api/login";
+        }, 500);
+        return;
+      }
+      toast({
+        title: "Error",
+        description: "Failed to delete tenant. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
 
   // Add a new tenant
   const addTenant = useCallback((tenant: Omit<TenantInfo, 'id'>) => {
-    const newTenant: TenantInfo = {
-      ...tenant,
-      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-    };
-    const newTenants = [...tenants, newTenant];
-    saveTenants(newTenants);
-  }, [tenants, saveTenants]);
+    addMutation.mutate(tenant);
+  }, [addMutation]);
 
   // Update an existing tenant
   const updateTenant = useCallback((id: string, updates: Partial<Omit<TenantInfo, 'id'>>) => {
-    const newTenants = tenants.map(tenant =>
-      tenant.id === id ? { ...tenant, ...updates } : tenant
-    );
-    saveTenants(newTenants);
-  }, [tenants, saveTenants]);
+    updateMutation.mutate({ id, updates });
+  }, [updateMutation]);
 
   // Delete a tenant
   const deleteTenant = useCallback((id: string) => {
-    const newTenants = tenants.filter(tenant => tenant.id !== id);
-    saveTenants(newTenants);
-  }, [tenants, saveTenants]);
+    deleteMutation.mutate(id);
+  }, [deleteMutation]);
 
-  // Clear all tenants
+  // Clear all tenants (not implemented for database)
   const clearAllTenants = useCallback(() => {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-      setTenants([]);
-    } catch (error) {
-      console.error('Failed to clear tenant settings:', error);
-    }
-  }, []);
+    toast({
+      title: "Not available",
+      description: "Bulk delete is not available. Delete tenants individually.",
+      variant: "destructive",
+    });
+  }, [toast]);
 
   // Get tenant by ID
   const getTenantById = useCallback((id: string) => {
@@ -80,5 +169,9 @@ export function useTenantSettings() {
     deleteTenant,
     clearAllTenants,
     getTenantById,
+    isLoading,
+    isAdding: addMutation.isPending,
+    isUpdating: updateMutation.isPending,
+    isDeleting: deleteMutation.isPending,
   };
 }

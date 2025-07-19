@@ -14,22 +14,10 @@ export function useElectricalCalculator() {
     propertyAddress: '',
   });
 
-  // Load landlord settings from localStorage on mount
+  // Load landlord settings from the database-backed hook
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('utilitypro-landlord-settings');
-      if (stored) {
-        const landlordSettings = JSON.parse(stored);
-        setData(prev => ({
-          ...prev,
-          landlordName: landlordSettings.landlordName || '',
-          landlordAddress: landlordSettings.landlordAddress || '',
-          landlordPhone: landlordSettings.landlordPhone || '',
-        }));
-      }
-    } catch (error) {
-      console.error('Failed to load landlord settings:', error);
-    }
+    // This will be handled by the parent component
+    // Remove local storage logic
   }, []);
 
   const calculate = useCallback((): ElectricalCalculation => {

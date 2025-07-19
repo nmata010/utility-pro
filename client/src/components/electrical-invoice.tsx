@@ -1,7 +1,9 @@
 import { ElectricalData, ElectricalCalculation } from '@/types/invoice';
-import { Zap, Printer } from 'lucide-react';
+import { Zap, Printer, Save } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
+import { useSaveInvoice } from '@/hooks/use-save-invoice';
+import { useEffect } from 'react';
 
 interface ElectricalInvoiceProps {
   data: ElectricalData;
@@ -9,11 +11,48 @@ interface ElectricalInvoiceProps {
 }
 
 export function ElectricalInvoice({ data, calculation }: ElectricalInvoiceProps) {
+  const { saveInvoice, isSaving } = useSaveInvoice();
+
   const handlePrint = () => {
     setTimeout(() => {
       window.print();
     }, 100);
   };
+
+  const handleSave = () => {
+    if (!calculation.isValid) return;
+
+    const invoiceNumber = `INV-${Date.now()}`;
+    const invoiceDate = new Date();
+
+    saveInvoice({
+      type: 'electrical',
+      invoiceNumber,
+      invoiceDate,
+      landlordData: {
+        name: data.landlordName,
+        address: data.landlordAddress,
+        phone: data.landlordPhone,
+      },
+      tenantData: {
+        name: data.tenantName,
+        address: data.propertyAddress,
+      },
+      calculationData: calculation,
+      totalAmount: calculation.mainHouseCost.toFixed(2),
+    });
+  };
+
+  // Auto-save when invoice data is complete
+  useEffect(() => {
+    if (calculation.isValid && 
+        data.landlordName && 
+        data.tenantName && 
+        data.billingPeriod.startDate && 
+        data.billingPeriod.endDate) {
+      // Invoice is complete and valid
+    }
+  }, [calculation, data]);
 
   const formatBillingPeriod = () => {
     if (data.billingPeriod.startDate && data.billingPeriod.endDate) {
@@ -111,17 +150,31 @@ export function ElectricalInvoice({ data, calculation }: ElectricalInvoiceProps)
         </div>
       </div>
 
-      <footer className="pt-6 border-t border-slate-200 text-sm text-slate-600 space-y-3">
-        <p>
-          <strong className="text-slate-800">Payment Terms:</strong> This amount is deemed "Additional Rent" as per your Lease Addendum and is due with your next regularly scheduled rent payment. Please make payment to{' '}
-          <span className="font-semibold text-slate-800">
-            {data.landlordName || '[Landlord Name]'}
-          </span>{' '}
-          via the usual method.
-        </p>
-        <p>
-          <strong className="text-slate-800">Calculation Method:</strong> (Total Bill Amount ÷ Total kWh Usage) × Main House kWh Usage as agreed upon in your lease.
-        </p>
+      <footer className="pt-6 border-t border-slate-200 space-y-3">
+        <div className="text-sm text-slate-600 space-y-3">
+          <p>
+            <strong className="text-slate-800">Payment Terms:</strong> This amount is deemed "Additional Rent" as per your Lease Addendum and is due with your next regularly scheduled rent payment. Please make payment to{' '}
+            <span className="font-semibold text-slate-800">
+              {data.landlordName || '[Landlord Name]'}
+            </span>{' '}
+            via the usual method.
+          </p>
+          <p>
+            <strong className="text-slate-800">Calculation Method:</strong> (Total Bill Amount ÷ Total kWh Usage) × Main House kWh Usage as agreed upon in your lease.
+          </p>
+        </div>
+        
+        <div className="flex justify-end gap-2 pt-4 no-print">
+          <Button
+            onClick={handleSave}
+            disabled={!calculation.isValid || isSaving}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <Save className="h-4 w-4" />
+            {isSaving ? 'Saving...' : 'Save Invoice'}
+          </Button>
+        </div>
       </footer>
     </div>
   );
