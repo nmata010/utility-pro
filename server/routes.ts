@@ -35,9 +35,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/settings/landlord', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      console.log("Saving landlord settings for user:", userId);
+      console.log("Request body:", req.body);
+      
       const validation = insertLandlordSettingsSchema.safeParse({ ...req.body, userId });
       
       if (!validation.success) {
+        console.error("Validation errors:", validation.error.errors);
         return res.status(400).json({ message: "Invalid data", errors: validation.error.errors });
       }
 
@@ -115,9 +119,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/invoices', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      console.log("Saving invoice for user:", userId);
+      console.log("Request body:", req.body);
+      
       const validation = insertInvoiceSchema.safeParse({ ...req.body, userId });
       
       if (!validation.success) {
+        console.error("Validation errors:", validation.error.errors);
         return res.status(400).json({ message: "Invalid data", errors: validation.error.errors });
       }
 
