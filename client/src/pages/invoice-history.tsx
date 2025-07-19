@@ -84,13 +84,13 @@ export default function InvoiceHistory() {
                     
                     <div>
                       <p className="text-sm font-medium text-slate-700">Tenant</p>
-                      <p className="text-sm text-slate-600">{tenant.tenantName || 'N/A'}</p>
+                      <p className="text-sm text-slate-600">{tenant.name || 'N/A'}</p>
                     </div>
 
                     <div className="flex items-center justify-between pt-3 border-t">
                       <div className="flex items-center gap-1">
                         <DollarSign className="h-4 w-4 text-slate-600" />
-                        <span className="text-lg font-semibold">{invoice.totalAmount}</span>
+                        <span className="text-lg font-semibold">${invoice.totalAmount}</span>
                       </div>
                       <Button 
                         size="sm" 
