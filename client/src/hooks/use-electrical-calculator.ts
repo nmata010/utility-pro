@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { ElectricalData, ElectricalCalculation, BillingPeriod } from '@/types/invoice';
+import type { LandlordSettings } from '@shared/schema';
 
 export function useElectricalCalculator() {
   const [data, setData] = useState<ElectricalData>({
@@ -14,11 +16,22 @@ export function useElectricalCalculator() {
     propertyAddress: '',
   });
 
-  // Load landlord settings from the database-backed hook
+  // Fetch landlord settings from database
+  const { data: landlordSettings } = useQuery<LandlordSettings | null>({
+    queryKey: ['/api/settings/landlord'],
+  });
+
+  // Update landlord fields when settings are loaded
   useEffect(() => {
-    // This will be handled by the parent component
-    // Remove local storage logic
-  }, []);
+    if (landlordSettings) {
+      setData(prev => ({
+        ...prev,
+        landlordName: landlordSettings.landlordName || '',
+        landlordAddress: landlordSettings.landlordAddress || '',
+        landlordPhone: landlordSettings.landlordPhone || '',
+      }));
+    }
+  }, [landlordSettings]);
 
   const calculate = useCallback((): ElectricalCalculation => {
     const { mainBillAmount, totalKwh, aduKwh } = data;

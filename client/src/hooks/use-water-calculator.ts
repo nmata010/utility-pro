@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { WaterData, WaterCalculation, BillingPeriod } from '@/types/invoice';
+import type { LandlordSettings } from '@shared/schema';
 
 export function useWaterCalculator() {
   const [data, setData] = useState<WaterData>({
@@ -15,23 +17,22 @@ export function useWaterCalculator() {
     propertyAddress: '',
   });
 
-  // Load landlord settings from localStorage on mount
+  // Fetch landlord settings from database
+  const { data: landlordSettings } = useQuery<LandlordSettings | null>({
+    queryKey: ['/api/settings/landlord'],
+  });
+
+  // Update landlord fields when settings are loaded
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('utilitypro-landlord-settings');
-      if (stored) {
-        const landlordSettings = JSON.parse(stored);
-        setData(prev => ({
-          ...prev,
-          landlordName: landlordSettings.landlordName || '',
-          landlordAddress: landlordSettings.landlordAddress || '',
-          landlordPhone: landlordSettings.landlordPhone || '',
-        }));
-      }
-    } catch (error) {
-      console.error('Failed to load landlord settings:', error);
+    if (landlordSettings) {
+      setData(prev => ({
+        ...prev,
+        landlordName: landlordSettings.landlordName || '',
+        landlordAddress: landlordSettings.landlordAddress || '',
+        landlordPhone: landlordSettings.landlordPhone || '',
+      }));
     }
-  }, []);
+  }, [landlordSettings]);
 
   const calculate = useCallback((): WaterCalculation => {
     const { quarterlyBill, monthlyAllowance, totalSqFt, tenantSqFt } = data;
