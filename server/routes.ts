@@ -122,7 +122,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Saving invoice for user:", userId);
       console.log("Request body:", req.body);
       
-      const validation = insertInvoiceSchema.safeParse({ ...req.body, userId });
+      // Convert invoiceDate string to Date object
+      const invoiceData = {
+        ...req.body,
+        userId,
+        invoiceDate: new Date(req.body.invoiceDate)
+      };
+      
+      const validation = insertInvoiceSchema.safeParse(invoiceData);
       
       if (!validation.success) {
         console.error("Validation errors:", validation.error.errors);
