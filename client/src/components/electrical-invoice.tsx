@@ -41,7 +41,7 @@ export function ElectricalInvoice({ data, calculation, viewOnly = false }: Elect
       },
       formData: data,
       calculationData: calculation,
-      totalAmount: calculation.aduCost.toFixed(2),
+      totalAmount: calculation.mainHouseCost.toFixed(2),
     });
   };
 
