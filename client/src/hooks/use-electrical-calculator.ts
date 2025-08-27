@@ -66,7 +66,7 @@ export function useElectricalCalculator() {
     if (isProratedEnabled && billingPeriod.startDate && billingPeriod.endDate) {
       const billingStart = billingPeriod.startDate;
       const billingEnd = billingPeriod.endDate;
-      totalBillingDays = Math.ceil((billingEnd.getTime() - billingStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+      totalBillingDays = Math.floor((billingEnd.getTime() - billingStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 
       if (occupancyPeriod.moveInDate || occupancyPeriod.moveOutDate) {
         const occupancyStart = occupancyPeriod.moveInDate || billingStart;
@@ -77,7 +77,7 @@ export function useElectricalCalculator() {
         const validEnd = new Date(Math.min(occupancyEnd.getTime(), billingEnd.getTime()));
         
         if (validStart <= validEnd) {
-          occupancyDays = Math.ceil((validEnd.getTime() - validStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+          occupancyDays = Math.floor((validEnd.getTime() - validStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
           prorationFactor = occupancyDays / totalBillingDays;
           proratedAmount = mainHouseCost * prorationFactor;
         }
