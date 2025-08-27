@@ -11,11 +11,18 @@ export interface BillingPeriod {
   endDate: Date | null;
 }
 
+export interface OccupancyPeriod {
+  moveInDate: Date | null;
+  moveOutDate: Date | null;
+}
+
 export interface ElectricalData extends PartyInformation {
   mainBillAmount: number;
   totalKwh: number;
   aduKwh: number;
   billingPeriod: BillingPeriod;
+  isProratedEnabled: boolean;
+  occupancyPeriod: OccupancyPeriod;
 }
 
 export interface WaterData extends PartyInformation {
@@ -32,6 +39,12 @@ export interface ElectricalCalculation {
   aduCost: number;
   mainHouseCost: number;
   isValid: boolean;
+  // Proration fields
+  totalBillingDays: number;
+  occupancyDays: number;
+  prorationFactor: number;
+  originalAmount: number;
+  proratedAmount: number;
 }
 
 export interface WaterCalculation {

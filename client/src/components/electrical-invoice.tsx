@@ -98,16 +98,69 @@ export function ElectricalInvoice({ data, calculation }: ElectricalInvoiceProps)
         </table>
       </div>
 
+      {/* Proration Details */}
+      {data.isProratedEnabled && calculation.totalBillingDays > 0 && (
+        <div className="mb-8 bg-blue-50 rounded-lg p-6 border border-blue-200">
+          <h4 className="text-lg font-semibold text-slate-800 mb-4 text-center">Proration Calculation</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-slate-600">Billing Period:</span>
+                <span className="font-medium text-slate-800">{calculation.totalBillingDays} days</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-600">Occupancy Period:</span>
+                <span className="font-medium text-slate-800">{calculation.occupancyDays} days</span>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-slate-600">Proration Factor:</span>
+                <span className="font-medium text-slate-800">{(calculation.prorationFactor * 100).toFixed(1)}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-600">Original Amount:</span>
+                <span className="font-medium text-slate-800">${calculation.originalAmount.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 pt-3 border-t border-blue-200 text-center">
+            <p className="text-xs text-blue-700">
+              Prorated amount reflects partial occupancy during billing period
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-end mb-8">
         <div className="w-full md:w-1/2 lg:w-1/3 bg-slate-50 rounded-lg p-4">
-          <div className="flex justify-between py-2">
-            <span className="font-medium text-slate-600">Subtotal:</span>
-            <span className="font-medium text-slate-800">${(calculation.mainHouseCost || 0).toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between py-3 border-t-2 border-slate-300">
-            <span className="text-xl font-bold text-slate-900">Total Due:</span>
-            <span className="text-xl font-bold text-emerald-600">${(calculation.mainHouseCost || 0).toFixed(2)}</span>
-          </div>
+          {data.isProratedEnabled && calculation.prorationFactor < 1 ? (
+            <>
+              <div className="flex justify-between py-2">
+                <span className="font-medium text-slate-600">Original Amount:</span>
+                <span className="font-medium text-slate-800">${calculation.originalAmount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between py-2">
+                <span className="font-medium text-slate-600">Proration ({(calculation.prorationFactor * 100).toFixed(1)}%):</span>
+                <span className="font-medium text-slate-800">-${(calculation.originalAmount - calculation.proratedAmount).toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between py-3 border-t-2 border-slate-300">
+                <span className="text-xl font-bold text-slate-900">Total Due:</span>
+                <span className="text-xl font-bold text-emerald-600">${calculation.proratedAmount.toFixed(2)}</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex justify-between py-2">
+                <span className="font-medium text-slate-600">Subtotal:</span>
+                <span className="font-medium text-slate-800">${(calculation.mainHouseCost || 0).toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between py-3 border-t-2 border-slate-300">
+                <span className="text-xl font-bold text-slate-900">Total Due:</span>
+                <span className="text-xl font-bold text-emerald-600">${(calculation.mainHouseCost || 0).toFixed(2)}</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -120,8 +173,13 @@ export function ElectricalInvoice({ data, calculation }: ElectricalInvoiceProps)
           via the usual method.
         </p>
         <p>
-          <strong className="text-slate-800">Calculation Method:</strong> (Total Bill Amount ÷ Total kWh Usage) × Main House kWh Usage as agreed upon in your lease.
+          <strong className="text-slate-800">Calculation Method:</strong> (Total Bill Amount ÷ Total kWh Usage) × Main House kWh Usage{data.isProratedEnabled ? ' × Proration Factor' : ''} as agreed upon in your lease.
         </p>
+        {data.isProratedEnabled && calculation.totalBillingDays > 0 && (
+          <p>
+            <strong className="text-slate-800">Proration:</strong> Charges are prorated based on {calculation.occupancyDays} days of occupancy out of {calculation.totalBillingDays} total billing days ({(calculation.prorationFactor * 100).toFixed(1)}%).
+          </p>
+        )}
       </footer>
     </div>
   );

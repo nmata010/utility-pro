@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { ElectricalData, ElectricalCalculation, BillingPeriod } from '@/types/invoice';
+import { ElectricalData, ElectricalCalculation, BillingPeriod, OccupancyPeriod } from '@/types/invoice';
 
 export function useElectricalCalculator() {
   const [data, setData] = useState<ElectricalData>({
@@ -7,6 +7,8 @@ export function useElectricalCalculator() {
     totalKwh: 0,
     aduKwh: 0,
     billingPeriod: { startDate: null, endDate: null },
+    isProratedEnabled: false,
+    occupancyPeriod: { moveInDate: null, moveOutDate: null },
     landlordName: '',
     landlordAddress: '',
     landlordPhone: '',
@@ -33,7 +35,7 @@ export function useElectricalCalculator() {
   }, []);
 
   const calculate = useCallback((): ElectricalCalculation => {
-    const { mainBillAmount, totalKwh, aduKwh } = data;
+    const { mainBillAmount, totalKwh, aduKwh, isProratedEnabled, billingPeriod, occupancyPeriod } = data;
     
     if (mainBillAmount <= 0 || totalKwh <= 0) {
       return {
@@ -42,6 +44,11 @@ export function useElectricalCalculator() {
         aduCost: 0,
         mainHouseCost: 0,
         isValid: false,
+        totalBillingDays: 0,
+        occupancyDays: 0,
+        prorationFactor: 1,
+        originalAmount: 0,
+        proratedAmount: 0,
       };
     }
 
@@ -50,16 +57,48 @@ export function useElectricalCalculator() {
     const aduCost = aduKwh * effectiveRate;
     const mainHouseCost = mainHouseKwh * effectiveRate;
 
+    // Calculate proration if enabled
+    let totalBillingDays = 0;
+    let occupancyDays = 0;
+    let prorationFactor = 1;
+    let proratedAmount = mainHouseCost;
+
+    if (isProratedEnabled && billingPeriod.startDate && billingPeriod.endDate) {
+      const billingStart = billingPeriod.startDate;
+      const billingEnd = billingPeriod.endDate;
+      totalBillingDays = Math.ceil((billingEnd.getTime() - billingStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+
+      if (occupancyPeriod.moveInDate || occupancyPeriod.moveOutDate) {
+        const occupancyStart = occupancyPeriod.moveInDate || billingStart;
+        const occupancyEnd = occupancyPeriod.moveOutDate || billingEnd;
+        
+        // Ensure occupancy dates are within billing period
+        const validStart = new Date(Math.max(occupancyStart.getTime(), billingStart.getTime()));
+        const validEnd = new Date(Math.min(occupancyEnd.getTime(), billingEnd.getTime()));
+        
+        if (validStart <= validEnd) {
+          occupancyDays = Math.ceil((validEnd.getTime() - validStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+          prorationFactor = occupancyDays / totalBillingDays;
+          proratedAmount = mainHouseCost * prorationFactor;
+        }
+      }
+    }
+
     return {
       effectiveRate,
       mainHouseKwh,
       aduCost,
       mainHouseCost,
       isValid: true,
+      totalBillingDays,
+      occupancyDays,
+      prorationFactor,
+      originalAmount: mainHouseCost,
+      proratedAmount,
     };
   }, [data]);
 
-  const updateField = useCallback((field: keyof ElectricalData, value: string | number | BillingPeriod) => {
+  const updateField = useCallback((field: keyof ElectricalData, value: string | number | boolean | BillingPeriod | OccupancyPeriod) => {
     setData(prev => ({
       ...prev,
       [field]: value,
