@@ -193,7 +193,7 @@ export default function SettingsPage() {
               </div>
               <Button
                 onClick={() => setIsAddingTenant(true)}
-                disabled={isAddingTenant || editingTenant}
+                disabled={isAddingTenant || Boolean(editingTenant)}
                 className="bg-emerald-600 hover:bg-emerald-700"
               >
                 <Plus className="mr-2 h-4 w-4" />
@@ -280,7 +280,7 @@ export default function SettingsPage() {
                             <div className="flex justify-end space-x-2">
                               <Button
                                 onClick={() => handleEditTenant(tenant)}
-                                disabled={isAddingTenant || editingTenant}
+                                disabled={isAddingTenant || Boolean(editingTenant)}
                                 variant="outline"
                                 size="sm"
                               >
@@ -288,7 +288,7 @@ export default function SettingsPage() {
                               </Button>
                               <Button
                                 onClick={() => handleDeleteTenant(tenant.id)}
-                                disabled={isAddingTenant || editingTenant}
+                                disabled={isAddingTenant || Boolean(editingTenant)}
                                 variant="outline"
                                 size="sm"
                                 className="text-red-600 border-red-200 hover:bg-red-50"

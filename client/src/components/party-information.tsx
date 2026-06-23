@@ -3,16 +3,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Users } from 'lucide-react';
 import { TenantSelector } from '@/components/ui/tenant-selector';
+import type { PartyInformation as PartyInformationData } from '@/types/invoice';
+
+type PartyInformationField = keyof PartyInformationData;
 
 interface PartyInformationProps {
-  data: {
-    landlordName: string;
-    landlordAddress: string;
-    landlordPhone: string;
-    tenantName: string;
-    propertyAddress: string;
-  };
-  onUpdate: (field: string, value: string) => void;
+  data: PartyInformationData;
+  onUpdate: (field: PartyInformationField, value: string) => void;
 }
 
 export function PartyInformation({ data, onUpdate }: PartyInformationProps) {
